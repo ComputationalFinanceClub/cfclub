@@ -40,7 +40,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.9rem 1rem;
+            padding: 0.5rem 1rem;
         }
 
         .logo {
@@ -55,13 +55,14 @@
         }
 
         .logo::before {
-            content: "∑";
-            font-size: 1rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3B82F6 0%, #F59E0B 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            content: "";
+            width: 42px;
+            height: 42px;
+            background-image: url('./media/school_logol.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
         }
 
         .nav-signup {
@@ -349,7 +350,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">CompFin Club</a>
+            <a href="#" class="logo"></a>
             <button class="nav-signup" onclick="openModal()">Sign Up</button>
         </div>
     </nav>
