@@ -29,7 +29,7 @@
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-            z-index: 1000;
+            z-index: 9;
             transition: all 0.3s ease;
         }
 
@@ -39,11 +39,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 0.9rem 1rem;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #F8FAFC;
             text-decoration: none;
@@ -55,7 +55,7 @@
 
         .logo::before {
             content: "∑";
-            font-size: 2rem;
+            font-size: 1rem;
             font-weight: 800;
             background: linear-gradient(135deg, #3B82F6 0%, #F59E0B 100%);
             background-clip: text;
@@ -67,18 +67,17 @@
             background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             border: none;
             color: white;
-            padding: 0.75rem 1.75rem;
+            padding: 0.4rem 1rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 0.95rem;
             letter-spacing: -0.025em;
         }
 
         .nav-signup:hover {
-            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-            transform: translateY(-1px);
+            background: linear-gradient(135deg, #EAB308 0%, #CA8A04 100%);
             box-shadow: 0 10px 25px rgba(59, 130, 246, 0.25);
         }
 
@@ -182,54 +181,6 @@
             background: linear-gradient(135deg, #EAB308 0%, #CA8A04 100%);
             transform: translateY(-2px);
             box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
-        }
-
-        /* Features floating animation */
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            animation: floatRandom 15s ease-in-out infinite;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #E2E8F0;
-        }
-
-        .floating-element:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: -2s;
-        }
-
-        .floating-element:nth-child(2) {
-            top: 60%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
-        .floating-element:nth-child(3) {
-            top: 30%;
-            right: 20%;
-            animation-delay: -8s;
-        }
-
-        @keyframes floatRandom {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(1deg); }
-            66% { transform: translateY(10px) rotate(-0.5deg); }
         }
 
         /* Modal Styles */
@@ -404,27 +355,15 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="floating-elements">
-            <div class="floating-element">
-                📊 Quantitative Analysis
-            </div>
-            <div class="floating-element">
-                🤖 Algorithmic Trading
-            </div>
-            <div class="floating-element">
-                💡 Financial Engineering
-            </div>
-        </div>
-        
         <div class="hero-content">
             <div class="hero-badge">
-                Join 500+ Students
+                Join 20+ Students
             </div>
             <h1 class="hero-title">
-                Master <span class="highlight">Computational Finance</span>
+                <span class="highlight">Computational Finance </span>Club
             </h1>
             <p class="hero-subtitle">
-                Connect with quantitative analysts, build trading algorithms, and learn cutting-edge financial technology. Join our community of future fintech leaders.
+                Connect with fellow students to embark on a journey to learn financial technology and build trading algorithms
             </p>
             <button class="cta-button" onclick="openModal()">Join the Club</button>
         </div>
