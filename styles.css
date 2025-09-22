@@ -16,9 +16,8 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
     z-index: 9;
     transition: all 0.3s ease;
 }
@@ -28,7 +27,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
 }
 .logo {
     font-size: 1rem;
@@ -54,7 +53,7 @@ body {
     background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
     border: none;
     color: white;
-    padding: 0.4rem 1rem;
+    padding: 0.3rem 1rem;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -73,12 +72,12 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 1rem;
     position: relative;
     overflow: hidden;
 }
 .hero-content {
     max-width: 800px;
+    padding: 0 1rem;
     position: relative;
 }
 .hero-badge {
@@ -93,6 +92,7 @@ body {
     font-weight: 500;
     color: #3B82F6;
     margin-bottom: 3rem;
+    margin-top: 2rem;
 }
 .hero-badge::before {
     content: "🚀";
@@ -141,8 +141,7 @@ body {
     box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
 }
 .hero-image img{
-    width: 25%;
-    max-width: 120px;
+    width: 100px;
     margin-top: 3rem;
 }
 /* Modal Styles */
