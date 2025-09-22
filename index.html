@@ -70,7 +70,7 @@
             border: none;
             color: white;
             padding: 0.4rem 1rem;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
@@ -95,28 +95,9 @@
             padding: 0 2rem;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
-        }
-
         .hero-content {
             max-width: 800px;
             position: relative;
-            z-index: 2;
         }
 
         .hero-badge {
@@ -195,7 +176,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            z-index: 2000;
+            z-index: 20;
             animation: fadeIn 0.3s ease;
         }
 
@@ -212,11 +193,11 @@
 
         .modal-content {
             background: #0F172A;
-            border: 1px solid rgba(148, 163, 184, 0.1);
-            padding: 3rem;
+            padding: 1rem;
             border-radius: 16px;
             max-width: 500px;
-            width: 90%;
+            /* border: 1px solid gold; */
+            width: 95%;
             height: 100%;
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
@@ -236,8 +217,8 @@
 
         .close {
             position: absolute;
-            top: 1rem;
-            right: 1.5rem;
+            top: 0rem;
+            right: 0.5rem;
             font-size: 2rem;
             cursor: pointer;
             color: #64748B;
@@ -249,7 +230,6 @@
         }
 
         .modal h2 {
-            margin-bottom: 1rem;
             font-size: 1.5rem;
             font-weight: 700;
             text-align: center;
@@ -398,23 +378,6 @@
             if (e.target === this) {
                 closeModal();
             }
-        });
-
-        // Form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Simulate form submission
-            alert('Welcome to the Computational Finance Club! We\'ll be in touch soon.');
-            console.log('Form submission:', data);
-            
-            // Close modal and reset form
-            closeModal();
-            this.reset();
         });
 
         // Navbar background on scroll
