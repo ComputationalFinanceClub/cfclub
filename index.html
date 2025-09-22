@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computational Finance Club</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
@@ -335,7 +335,6 @@
             <button class="nav-signup" onclick="openModal()">Sign Up</button>
         </div>
     </nav>
-
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
@@ -351,7 +350,6 @@
             <button class="cta-button" onclick="openModal()">Join the Club</button>
         </div>
     </section>
-
     <!-- Modal -->
     <div class="modal" id="signupModal">
         <div class="modal-content">
@@ -367,15 +365,19 @@
             document.getElementById('signupModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
-
         function closeModal() {
             document.getElementById('signupModal').classList.remove('show');
             document.body.style.overflow = 'auto';
         }
-
         // Close modal when clicking outside
         document.getElementById('signupModal').addEventListener('click', function(e) {
             if (e.target === this) {
+                closeModal();
+            }
+        });
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('signupModal').classList.contains('show')) {
                 closeModal();
             }
         });
@@ -387,13 +389,6 @@
                 navbar.style.background = 'rgba(15, 23, 42, 0.95)';
             } else {
                 navbar.style.background = 'rgba(15, 23, 42, 0.85)';
-            }
-        });
-
-        // ESC key to close modal
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('signupModal').classList.contains('show')) {
-                closeModal();
             }
         });
     </script>
