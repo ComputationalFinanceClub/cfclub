@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFC Blog</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="logo"></a>
+            <button class="nav-signup" onclick="openModal()">Sign Up</button>
+        </div>
+    </nav>
+
+    <main>
+        <h1>CFC Blog</h1>
+        <div>
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+                <option value="date">Date (most recent)</option>
+                <option value="author">Author</option>
+                <option value="topic">Topic</option>
+            </select>
+        </div>
+
+        <div id="blogContainer"></div>
+    </main>
+
+    <footer>
+        <p>&copy; Computational Finance Club - 2025</p>
+    </footer>
+
+    <script src="../scripts/blog-posts.js"></script>
+    <script src="../scripts/blog.js"></script>
+</body>
+</html>
