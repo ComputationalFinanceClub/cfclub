@@ -144,7 +144,7 @@ body {
     width: 100px;
     margin-top: 3rem;
 }
-/* Modal Styles */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -198,4 +198,13 @@ iframe {
     border-radius: 10px;
     /* font-display: swap; */
     background-color: #64748B;
+}
+/* Footer */
+footer {
+    background: rgba(15, 23, 42, 0.6);
+    /* border-top: 1px solid gold; */
+    font-size: smaller;
+    margin-top: 1rem;
+    padding: 2rem 1rem;
+    text-align: center;
 }
