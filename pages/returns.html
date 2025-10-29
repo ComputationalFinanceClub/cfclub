@@ -29,7 +29,7 @@
 </head>
 <body>
 
-    <h1>Stock Index Monthly & Annual Returns (2000-2025)</h1>
+    <h2>Stock index monthly & annual returns (2000-2025)</h2>
 
     <div id="filter-controls">
         <label for="startYear">Start Year:</label>
@@ -43,9 +43,30 @@
 
     <div id="returns-table-container"></div>
 
+    <h3>Probability of monthly returns > threshold</h3>
+    <table id="probTable">
+        <thead>
+            <tr>
+                <th class="index-header" rowspan="2"></th>
+                <th colspan="5">Threshold</th>
+            </tr>
+            <tr>
+                <th>0%</th>
+                <th>1%</th>
+                <th>2%</th>
+                <th>3%</th>
+                <th>5%</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Rows added by JS -->
+        </tbody>
+    </table>
+    <p>Based on monthly returns from Jan 2000 to Sept 2025</p>
     <script>
         const ALL_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const indices = ['sp500', 'djia', 'nasdaq'];
+        const thresholds = [0, 1, 2, 3, 5];
 
         const data = {
             2000: { sp500: [-5.09, -1.98, 9.67, -3.08, -2.19, 2.39, -1.63, 6.07, -5.35, -0.48, -7.89, 0.41], djia: [-4.78, -0.48, 5.17, -4.77, -3.24, 2.34, -1.60, 6.18, -4.37, -0.35, -7.66, 0.92], nasdaq: [-3.23, 19.16, -2.64, -15.60, -11.90, 16.63, -5.04, 11.69, -12.70, -4.91, -22.89, -4.90] },
@@ -93,7 +114,7 @@
             if (value === null || value === undefined) {
                 return `<td class="annual ${isAnnual ? 'ytd-missing' : ''}">-</td>`;
             }
-            const fixedValue = value.toFixed(2);
+            const fixedValue = value.toFixed(1);
             const className = value >= 0 ? 'positive' : 'negative';
             const extraClass = isAnnual ? 'annual' : '';
             return `<td class="${className} ${extraClass}">${fixedValue}%</td>`;
@@ -127,13 +148,13 @@
             const maxMonths = ALL_MONTHS.length;
 
             // Table Header: Months and Annual/YTD
-            html += '<tr><th class="year-header" rowspan="2">Year</th>';
-            html += '<th class="index-header" rowspan="2">Index</th>';
+            html += '<tr><th class="year-header" rowspan="2"></th>';
+            html += '<th class="index-header" rowspan="2"></th>';
             
             ALL_MONTHS.forEach(month => {
                 html += `<th colspan="1">${month}</th>`;
             });
-            html += '<th class="annual" rowspan="2">Annual / YTD</th></tr></thead><tbody>';
+            html += '<th class="annual" rowspan="2">Annual</th></tr></thead><tbody>';
 
             // Table Body: Data Rows
             filteredYears.forEach(year => {
@@ -180,8 +201,51 @@
             document.getElementById('returns-table-container').innerHTML = html;
         }
 
+        /**
+         * Calculates probability of monthly returns > threshold
+         */
+        function probAbove(returnsArray, threshold) {
+            const count = returnsArray.filter(r => r > threshold).length;
+            return (count / returnsArray.length * 100).toFixed(1) + '%';
+        }
+
+        /**
+         * Adds probability of monthly returns > threshold, for each threshold
+         */
+        function addMonthlyRetProbsToTable() {
+            // Collect valid returns
+            const returns = { sp500: [], djia: [], nasdaq: [] };
+            for (const year in data) {
+                const y = data[year];
+                y.sp500.forEach((r, i) => {
+                    if (r !== null) {
+                        returns.sp500.push(r);
+                        if (i < y.djia.length && y.djia[i] !== null) returns.djia.push(y.djia[i]);
+                        if (i < y.nasdaq.length && y.nasdaq[i] !== null) returns.nasdaq.push(y.nasdaq[i]);
+                    }
+                });
+            }
+            // Populate table
+            const tbody = document.querySelector('#probTable tbody');
+            const indices = [
+                { name: 'S&P500', key: 'sp500' },
+                { name: 'DJIA', key: 'djia' },
+                { name: 'NASDAQ', key: 'nasdaq' }
+            ];
+
+            indices.forEach(idx => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td><strong>${idx.name}</strong></td>`;
+                thresholds.forEach(t => {
+                    const prob = probAbove(returns[idx.key], t);
+                    row.innerHTML += `<td class="prob">${prob}</td>`;
+                });
+                tbody.appendChild(row);
+            });
+        }
         // Initial table load
         document.addEventListener('DOMContentLoaded', generateReturnsTable);
+        addMonthlyRetProbsToTable()
     </script>
 
 </body>
