@@ -25,11 +25,25 @@ const posts = [
         content: "CSS Grid makes creating complex layouts easier than ever. Here's a comprehensive guide to get you started."
     },
     {
-        title: "Introduction to React Hooks",
-        punchline: "sample punchline",
-        author: "Mike Johnson",
-        date: "2024-03-25",
-        topic: "React",
-        content: "React Hooks changed how we write React components. This post introduces useState and useEffect."
+        title: "Market indices historical return",
+        punchline: "Historical returns are skewed to the right",
+        author: "Gonzalez",
+        date: "2025-10-29",
+        topic: "Market returns",
+        content: `Historical calendar year performance for the S&P500, DJIA and NASDAQ indices
+        are 
+        S&P500 (1928 - 2024)
+        Negative returns: 27%, 26/97 yrs
+        Returns < 5%: 33%, 32/97 yrs
+        Returns < 10%: 42%, 41/97 yrs
+        DJIA (1928 - 2024)
+        Negative returns: 32%, 31/97 yrs
+        Returns < 5%: 42%, 41/97 yrs
+        Returns < 10%: 51%, 49/97 yrs
+        NASDAQ (1971 - 2024)
+        Negative returns: 26%, 14/54 yrs
+        Returns < 5%: 28%, 15/54 yrs
+        Returns < 10%: 41%, 22/54 yrs
+        `
     }
 ];
