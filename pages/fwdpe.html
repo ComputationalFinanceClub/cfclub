@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Forward P/E Lookup</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>" />
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* small overrides to keep page readable with existing site theme */
+        main { max-width: 1000px; margin: 6rem auto 4rem; padding: 1rem; color: #F8FAFC; }
+        .card { background: rgba(15,23,42,0.6); border-radius: 12px; padding: 1rem; box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
+        label { display:block; margin-bottom: .5rem; font-weight:600; }
+        input[type="text"] { width: 100%; padding: .6rem .8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); color: #F8FAFC; }
+        button.primary { margin-top:.6rem; padding:.6rem 1rem; border-radius:10px; background:linear-gradient(135deg,#3B82F6,#2563EB); color:white; border:none; cursor:pointer; }
+        table { width:100%; border-collapse:collapse; margin-top:1rem; }
+        th, td { padding:.5rem .6rem; border-bottom:1px solid rgba(255,255,255,0.06); text-align:right; }
+        th:first-child, td:first-child { text-align:left; }
+        .positive { color: #86efac; }
+        .negative { color: #fda4af; }
+        .muted { color: #94a3b8; font-size:.95rem; }
+        pre { background: rgba(255,255,255,0.02); padding: .5rem; border-radius:6px; overflow:auto; color:#d1fae5; }
+        .error { color:#fecaca; margin-top:.6rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/index.html" class="logo"></a>
+            <button class="nav-signup" onclick="openModal()">Sign Up</button>
+        </div>
+    </nav>
+
+    <main>
+        <div class="card">
+            <h1>Forward P/E — Multiple Tickers</h1>
+            <p class="muted">Enter one or more ticker symbols separated by commas (e.g. V, AAPL, MSFT) and click Lookup.</p>
+
+            <label for="tickers">Tickers</label>
+            <input id="tickers" type="text" placeholder="e.g. V, SHW, AAPL" />
+            <div style="display:flex;gap:.6rem;align-items:center;">
+                <button id="lookupBtn" class="primary">Lookup</button>
+                <span id="status" class="muted" aria-live="polite"></span>
+            </div>
+
+            <div id="result" style="margin-top:1rem;"></div>
+
+            <div style="margin-top:1rem;" class="muted">
+                API: https://yfinance-phi.vercel.app/fwd-pe/multiple/?tickers=comma-separated-list
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Computational Finance Club - 2025</p>
+    </footer>
+
+    <script>
+        const input = document.getElementById('tickers');
+        const btn = document.getElementById('lookupBtn');
+        const result = document.getElementById('result');
+        const status = document.getElementById('status');
+
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') fetchPE(); });
+        btn.addEventListener('click', fetchPE);
+
+        function setStatus(msg) { status.textContent = msg || ''; }
+
+        function renderTable(tickerOrder, tickersObj) {
+            if (!tickersObj || Object.keys(tickersObj).length === 0) {
+                result.innerHTML = '<p class="error">No data returned for the requested tickers.</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Ticker</th><th>Current Price</th><th>Trailing EPS</th><th>Forward EPS</th><th>Forward P/E</th></tr></thead><tbody>';
+            tickerOrder.forEach(sym => {
+                const d = tickersObj[sym];
+                if (!d) {
+                    html += `<tr><td>${sym}</td><td colspan="4" class="muted">No data</td></tr>`;
+                    return;
+                }
+                const cp = (d.currentPrice == null) ? '—' : d.currentPrice.toFixed(2);
+                const tEPS = (d.trailingEPS == null) ? '—' : d.trailingEPS.toFixed(2);
+                const fEPS = (d.forwardEPS == null) ? '—' : d.forwardEPS.toFixed(2);
+                const fPE = (d.forwardPE == null) ? '—' : (typeof d.forwardPE === 'number' ? d.forwardPE.toFixed(2) : d.forwardPE);
+
+                const peClass = (typeof d.forwardPE === 'number') ? (d.forwardPE >= 0 ? 'positive' : 'negative') : '';
+
+                html += `<tr>
+                    <td>${sym}</td>
+                    <td>${cp}</td>
+                    <td>${tEPS}</td>
+                    <td>${fEPS}</td>
+                    <td class="${peClass}">${fPE}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+
+            // Raw JSON for reference
+            html += '<details style="margin-top:.8rem;color:#bde0fe;"><summary style="cursor:pointer">Show raw JSON</summary><pre>' + escapeHtml(JSON.stringify(tickersObj, null, 2)) + '</pre></details>';
+
+            result.innerHTML = html;
+        }
+
+        function escapeHtml(s) {
+            return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        async function fetchPE() {
+            const raw = input.value || '';
+            setStatus('');
+            result.innerHTML = '';
+            const tickers = raw.split(',')
+                                .map(s => s.trim().toUpperCase())
+                                .filter(Boolean);
+            if (tickers.length === 0) {
+                result.innerHTML = '<p class="error">Please enter at least one ticker symbol.</p>';
+                return;
+            }
+
+            const q = encodeURIComponent(tickers.join(','));
+            const url = `https://yfinance-phi.vercel.app/fwd-pe/multiple/?tickers=${q}`;
+
+            setStatus('Loading…');
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+                if (!res.ok) {
+                    throw new Error('Network response was not ok: ' + res.status);
+                }
+                const json = await res.json();
+                // Expected shape: { tickers: { "V": { ... }, ... } }
+                if (!json || !json.tickers) {
+                    throw new Error('Unexpected response shape');
+                }
+                // Render using requested order
+                const normalized = {};
+                // Normalize keys to uppercase to match user input
+                for (const key in json.tickers) {
+                    normalized[key.toUpperCase()] = json.tickers[key];
+                }
+                renderTable(tickers, normalized);
+            } catch (err) {
+                result.innerHTML = `<p class="error">Lookup failed: ${err.message}</p>`;
+            } finally {
+                setStatus('');
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
