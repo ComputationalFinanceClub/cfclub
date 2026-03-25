@@ -27,7 +27,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 1rem;
+    padding:0.75rem 1rem;
 }
 .logo {
     font-size: 1rem;
@@ -43,24 +43,27 @@ body {
     content: "";
     width: 32px;
     height: 32px;
-    background-image: url('./media/school_logo_center.png');
+    background-image: url('./media/CFClogo.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     display: inline-block;
+    border-radius: 10px;
 }
 .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 0.8rem;
     align-items: center;
 }
 .nav-links a {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 10px;
     color: #F8FAFC;
     text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 0.9rem;
     letter-spacing: -0.025em;
     transition: all 0.3s ease;
+    padding: 0.25rem 1rem;
 }
 .nav-links a:hover {
     color: #3B82F6;
@@ -73,7 +76,6 @@ body {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-weight: 500;
     font-size: 0.95rem;
     letter-spacing: -0.025em;
 }
@@ -93,7 +95,7 @@ body {
 }
 .hero-content {
     max-width: 800px;
-    padding: 0 1rem;
+    padding: 2.5rem 1rem 0;
     position: relative;
 }
 .hero-badge {
