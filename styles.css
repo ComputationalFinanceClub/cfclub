@@ -226,3 +226,91 @@ footer {
     padding: 2rem 1rem;
     text-align: center;
 }
+
+/* Blog page: concise, card-like posts */
+main {
+    max-width: 900px;
+    margin: 6rem auto 4rem;
+    padding: 1rem;
+}
+
+#blogContainer article {
+    background: rgba(15,23,42,0.6);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+#blogContainer article:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(2,6,23,0.7);
+}
+
+#blogContainer article h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #F8FAFC;
+}
+#blogContainer article h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #93C5FD;
+}
+
+#blogContainer article cite,
+#blogContainer article time,
+#blogContainer article span {
+    display: inline-block;
+    margin-right: 0.6rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+#blogContainer article p {
+    margin-top: 0.6rem;
+    color: #E6EEF8;
+    line-height: 1.7;
+}
+
+/* Small screens: tighten spacing */
+@media (max-width: 640px) {
+    #blogContainer article { padding: 0.9rem; }
+    main { margin: 5.5rem 0 2rem; padding: 0.8rem; }
+}
+
+/* Blog: sort select styling */
+#sortBy {
+    appearance: none;
+    -webkit-appearance: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    background-color: #0F172A; /* ensure dark behind native dropdown */
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #F8FAFC;
+    padding: 0.45rem 0.8rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+    min-width: 180px;
+    cursor: pointer;
+}
+#sortBy:focus {
+    outline: none;
+    box-shadow: 0 6px 20px rgba(59,130,246,0.12);
+    border-color: rgba(59,130,246,0.6);
+}
+
+/* Native option styling (best-effort across browsers) */
+#sortBy option {
+    background-color: #0F172A;
+    color: #F8FAFC;
+}
+
+/* Windows/Edge: ensure dropdown text uses theme color */
+#sortBy::-ms-expand { display: inline-block; }
+
+/* ensure label/select layout */
+main > div { margin-bottom: 1rem; color: #CBD5E1; }
+main label { font-weight: 600; margin-right: 0.4rem; }
