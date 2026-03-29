@@ -16,8 +16,6 @@
         table { width:100%; border-collapse:collapse; margin-top:1rem; }
         th, td { padding:.5rem .6rem; border-bottom:1px solid rgba(255,255,255,0.06); text-align:right; }
         th:first-child, td:first-child { text-align:left; }
-        .positive { color: #86efac; }
-        .negative { color: #fda4af; }
         .muted { color: #94a3b8; font-size:.95rem; }
         pre { background: rgba(255,255,255,0.02); padding: .5rem; border-radius:6px; overflow:auto; color:#d1fae5; }
         .error { color:#fecaca; margin-top:.6rem; }
@@ -33,21 +31,16 @@
 
     <main>
         <div class="card">
-            <h1>Forward P/E — Multiple Tickers</h1>
-            <p class="muted">Enter one or more ticker symbols separated by commas (e.g. V, AAPL, MSFT) and click Lookup.</p>
+            <h2>Get forward p/e for one or more stocks</h2>
+            <p class="muted">Enter one or more ticker symbols separated by commas (e.g. V, AAPL, MSFT)</p>
 
             <label for="tickers">Tickers</label>
-            <input id="tickers" type="text" placeholder="e.g. V, SHW, AAPL" />
+            <input id="tickers" type="text" placeholder="V, SHW, AAPL" />
             <div style="display:flex;gap:.6rem;align-items:center;">
                 <button id="lookupBtn" class="primary">Lookup</button>
                 <span id="status" class="muted" aria-live="polite"></span>
             </div>
-
             <div id="result" style="margin-top:1rem;"></div>
-
-            <div style="margin-top:1rem;" class="muted">
-                API: https://yfinance-phi.vercel.app/fwd-pe/multiple/?tickers=comma-separated-list
-            </div>
         </div>
     </main>
 
@@ -81,8 +74,6 @@
                 const fEPS = (d.forwardEPS == null) ? '—' : d.forwardEPS.toFixed(2);
                 const fPE = (d.forwardPE == null) ? '—' : (typeof d.forwardPE === 'number' ? d.forwardPE.toFixed(2) : d.forwardPE);
 
-                const peClass = (typeof d.forwardPE === 'number') ? (d.forwardPE >= 0 ? 'positive' : 'negative') : '';
-
                 html += `<tr>
                     <td>${sym}</td>
                     <td>${cp}</td>
@@ -92,9 +83,6 @@
                 </tr>`;
             });
             html += '</tbody></table>';
-
-            // Raw JSON for reference
-            html += '<details style="margin-top:.8rem;color:#bde0fe;"><summary style="cursor:pointer">Show raw JSON</summary><pre>' + escapeHtml(JSON.stringify(tickersObj, null, 2)) + '</pre></details>';
 
             result.innerHTML = html;
         }
