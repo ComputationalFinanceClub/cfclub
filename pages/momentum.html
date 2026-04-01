@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Momentum — CFClub</title>
+	<link rel="stylesheet" href="../styles.css">
+	<style>
+		/* Force dark background regardless of styles.css loading */
+		html, body {
+			background-color: #0f172a;
+			color: #F8FAFC;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+			margin: 0;
+			min-height: 100vh;
+		}
+ 
+		main {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 7rem 2rem 4rem;
+		}
+ 
+		h2 {
+			font-size: 1.9rem;
+			font-weight: 700;
+			margin: 0 0 .3rem;
+			color: #F8FAFC;
+		}
+ 
+		.subtitle {
+			color: #94a3b8;
+			font-size: .95rem;
+			margin: 0 0 1.25rem;
+		}
+ 
+		label {
+			display: block;
+			font-weight: 600;
+			margin-bottom: .4rem;
+			color: #F8FAFC;
+		}
+ 
+		input[type="text"] {
+			width: 100%;
+			padding: .65rem .9rem;
+			border-radius: 8px;
+			border: 1px solid rgba(255,255,255,0.15);
+			background: rgba(255,255,255,0.04);
+			color: #F8FAFC;
+			font-size: 1rem;
+			box-sizing: border-box;
+			outline: none;
+			transition: border-color .15s;
+		}
+ 
+		input[type="text"]:focus { border-color: #F8FAFC; }
+		input[type="text"]::placeholder { color: #475569; }
+ 
+		.btn-row {
+			display: flex;
+			align-items: center;
+			gap: .75rem;
+			margin-top: .6rem;
+		}
+ 
+		button.primary {
+			padding: .55rem 1.2rem;
+			border-radius: 10px;
+			background: linear-gradient(135deg, #3B82F6, #2563EB);
+			color: white;
+			border: none;
+			cursor: pointer;
+			font-size: .95rem;
+			font-weight: 600;
+		}
+ 
+		button.primary:disabled { opacity: .5; cursor: not-allowed; }
+ 
+		.status { color: #64748b; font-size: .9rem; }
+		.err    { color: #fecaca; margin-top: .75rem; }
+ 
+		/* ── Table ── */
+		#result { margin-top: 1.75rem; }
+ 
+		table { width: 100%; border-collapse: collapse; }
+ 
+		thead tr { border-bottom: 1px solid rgba(255,255,255,0.1); }
+ 
+		th {
+			padding: .5rem .75rem;
+			font-size: .9rem;
+			font-weight: 600;
+			color: #F8FAFC;
+			text-align: left;
+			white-space: nowrap;
+		}
+ 
+		th:not(:first-child) { text-align: right; }
+ 
+		tbody tr.summary-row {
+			border-bottom: 1px solid rgba(255,255,255,0.05);
+			cursor: pointer;
+		}
+ 
+		tbody tr.summary-row:hover { background: rgba(255,255,255,0.03); }
+ 
+		td {
+			padding: .65rem .75rem;
+			font-size: .95rem;
+			color: #F8FAFC;
+			text-align: right;
+		}
+ 
+		td:first-child { text-align: left; font-weight: 600; }
+ 
+		.up   { color: #4ade80; }
+		.down { color: #f87171; }
+ 
+		/* ── Expanded detail ── */
+		tr.detail-row { display: none; }
+		tr.detail-row td {
+			padding: 0 .75rem .75rem;
+			border-bottom: 1px solid rgba(255,255,255,0.07);
+		}
+ 
+		.detail-inner {
+			padding: 1rem;
+			background: rgba(255,255,255,0.03);
+			border: 1px solid rgba(255,255,255,0.06);
+			border-radius: 10px;
+		}
+ 
+		.detail-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+			gap: .5rem;
+			margin-bottom: .75rem;
+		}
+ 
+		.metric {
+			background: rgba(255,255,255,0.03);
+			border: 1px solid rgba(255,255,255,0.06);
+			border-radius: 8px;
+			padding: .5rem .7rem;
+		}
+ 
+		.metric .mlabel {
+			font-size: 10px;
+			text-transform: uppercase;
+			letter-spacing: .05em;
+			color: #64748b;
+			margin-bottom: 3px;
+		}
+ 
+		.metric .mvalue {
+			font-size: 14px;
+			font-weight: 600;
+			color: #F8FAFC;
+		}
+ 
+		.verdict {
+			text-align: center;
+			font-weight: 700;
+			font-size: .95rem;
+			padding: .5rem 1rem;
+			border-radius: 8px;
+		}
+ 
+		.verdict.good { background: rgba(5,103,45,0.25);  color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+		.verdict.bad  { background: rgba(163,0,0,0.25);   color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+		.verdict.warn { background: rgba(106,68,0,0.25);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+ 
+		details { margin-top: .6rem; }
+		details summary { cursor: pointer; color: #475569; font-size: .8rem; }
+		details summary:hover { color: #94a3b8; }
+ 
+		pre {
+			margin-top: .4rem;
+			background: rgba(0,0,0,0.3);
+			padding: .6rem;
+			border-radius: 6px;
+			color: #d1fae5;
+			font-size: .78rem;
+			white-space: pre-wrap;
+			word-break: break-word;
+		}
+ 
+		.chevron {
+			font-size: .7rem;
+			color: #475569;
+			margin-left: 6px;
+			display: inline-block;
+			transition: transform .18s;
+		}
+		.chevron.open { transform: rotate(90deg); }
+	</style>
+</head>
+<body>
+	<nav class="navbar">
+		<div class="nav-container">
+			<a href="/index.html" class="logo"></a>
+			<button class="nav-signup" onclick="openModal()">Sign Up</button>
+		</div>
+	</nav>
+ 
+	<main>
+		<h2>Momentum Indicators</h2>
+		<p class="subtitle">Enter one or more ticker symbols separated by commas (e.g. AMZN, TSLA, NVDA)</p>
+ 
+		<label for="q">Tickers</label>
+		<input id="q" type="text" placeholder="AMZN, TSLA, NVDA" />
+ 
+		<div class="btn-row">
+			<button id="fetchBtn" class="primary">Fetch</button>
+			<span id="status" class="status" aria-live="polite"></span>
+		</div>
+ 
+		<div id="result"></div>
+	</main>
+ 
+	<script src="../scripts/footer.js"></script>
+	<script>
+		const apiBase = 'https://yfinance-phi.vercel.app/momentum/';
+ 
+		function qs(name){ return new URLSearchParams(location.search).get(name); }
+ 
+		function fmt(num, digits=2){
+			if (num == null || isNaN(num)) return '—';
+			return Number(num).toLocaleString(undefined, {maximumFractionDigits: digits});
+		}
+ 
+		function verdictClass(v){
+			v = (v||'').toLowerCase();
+			if (v.includes('bear')) return 'bad';
+			if (v.includes('bull')) return 'good';
+			return 'warn';
+		}
+ 
+		function buildDetail(d){
+			const metrics = [
+				{k:'rsi_14',          label:'RSI (14)'},
+				{k:'macd',            label:'MACD / Signal / Hist'},
+				{k:'adx',             label:'ADX'},
+				{k:'stochastic',      label:'Stochastic K / D'},
+				{k:'roc_10',          label:'ROC 10'},
+				{k:'roc_20',          label:'ROC 20'},
+				{k:'ma50',            label:'MA 50'},
+				{k:'ma200',           label:'MA 200'},
+				{k:'volume_ratio',    label:'Volume Ratio'},
+				{k:'ma_signal',       label:'MA Signal'},
+				{k:'volume_signal',   label:'Volume Signal'},
+				{k:'obv_trend',       label:'OBV Trend'},
+				{k:'divergence',      label:'Divergence'},
+				{k:'bullish_signals', label:'Bullish Signals'},
+			];
+ 
+			const tiles = metrics.map(m => {
+				let val;
+				if (m.k === 'macd' && d.macd)
+					val = `${fmt(d.macd.macd)} / ${fmt(d.macd.signal)} / ${fmt(d.macd.hist)}`;
+				else if (m.k === 'stochastic' && d.stochastic)
+					val = `${fmt(d.stochastic.k)} / ${fmt(d.stochastic.d)}`;
+				else
+					val = d[m.k] != null ? (typeof d[m.k] === 'number' ? fmt(d[m.k]) : d[m.k]) : '—';
+				return `<div class="metric"><div class="mlabel">${m.label}</div><div class="mvalue">${val}</div></div>`;
+			}).join('');
+ 
+			const vc = verdictClass(d.verdict);
+			return `
+				<div class="detail-inner">
+					<div class="detail-grid">${tiles}</div>
+					<div class="verdict ${vc}">${d.verdict || 'No verdict'}</div>
+					<details>
+						<summary>Raw JSON</summary>
+						<pre>${JSON.stringify(d, null, 2)}</pre>
+					</details>
+				</div>
+			`;
+		}
+ 
+		function renderTable(items){
+			const result = document.getElementById('result');
+			result.innerHTML = '';
+ 
+			if (!items.length){
+				result.innerHTML = '<p class="err">No data returned.</p>';
+				return;
+			}
+ 
+			const table = document.createElement('table');
+			const thead = `<thead><tr>
+				<th>Ticker</th>
+				<th>Current Price</th>
+				<th>Change %</th>
+				<th>52w Low</th>
+				<th>52w High</th>
+				<th>% from High</th>
+				<th>RSI (14)</th>
+				<th>ADX</th>
+				<th>Verdict</th>
+			</tr></thead>`;
+			table.innerHTML = thead + '<tbody></tbody>';
+			result.appendChild(table);
+			const tbody = table.querySelector('tbody');
+ 
+			const verdictColors = {good:'#4ade80', bad:'#f87171', warn:'#fbbf24'};
+ 
+			items.forEach((d, i) => {
+				const pc  = d.pct_change ?? 0;
+				const pfh = d.pct_from_52w_high ?? 0;
+				const vc  = verdictClass(d.verdict);
+ 
+				const sumRow = document.createElement('tr');
+				sumRow.className = 'summary-row';
+				sumRow.innerHTML = `
+					<td>${d.ticker}<span class="chevron" id="chev-${i}">›</span></td>
+					<td>${fmt(d.current_price)}</td>
+					<td class="${pc >= 0 ? 'up' : 'down'}">${pc >= 0 ? '+' : ''}${fmt(pc)}%</td>
+					<td>${fmt(d['52w_low'])}</td>
+					<td>${fmt(d['52w_high'])}</td>
+					<td class="${pfh >= 0 ? 'up' : 'down'}">${fmt(pfh)}%</td>
+					<td>${fmt(d.rsi_14)}</td>
+					<td>${fmt(d.adx)}</td>
+					<td style="color:${verdictColors[vc]}">${d.verdict || '—'}</td>
+				`;
+ 
+				const detRow = document.createElement('tr');
+				detRow.className = 'detail-row';
+				const detCell = document.createElement('td');
+				detCell.colSpan = 9;
+				detCell.innerHTML = buildDetail(d);
+				detRow.appendChild(detCell);
+ 
+				sumRow.addEventListener('click', () => {
+					const open = detRow.style.display === '';
+					detRow.style.display = open ? 'none' : '';
+					document.getElementById(`chev-${i}`).classList.toggle('open', !open);
+				});
+ 
+				tbody.appendChild(sumRow);
+				tbody.appendChild(detRow);
+			});
+		}
+ 
+		async function fetchAndRender(q){
+			const result = document.getElementById('result');
+			const status = document.getElementById('status');
+			const btn    = document.getElementById('fetchBtn');
+ 
+			result.innerHTML = '';
+			status.textContent = '';
+			if (!q) return;
+ 
+			status.textContent = 'Loading…';
+			btn.disabled = true;
+ 
+			try {
+				const tickers = q.split(',').map(s => s.trim().toUpperCase()).filter(Boolean);
+				const url = apiBase + encodeURIComponent(tickers.join(','));
+				const resp = await fetch(url);
+				if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+				const json = await resp.json();
+ 
+				let items = [];
+				if (Array.isArray(json))           items = json;
+				else if (json && json.ticker)      items = [json];
+				else if (typeof json === 'object') items = Object.values(json);
+ 
+				renderTable(items);
+			} catch(err){
+				result.innerHTML = `<p class="err">Lookup failed: ${err.message}</p>`;
+			} finally {
+				status.textContent = '';
+				btn.disabled = false;
+			}
+		}
+ 
+		document.getElementById('fetchBtn').addEventListener('click', () => {
+			fetchAndRender(document.getElementById('q').value.trim());
+		});
+ 
+		document.getElementById('q').addEventListener('keydown', e => {
+			if (e.key === 'Enter') fetchAndRender(document.getElementById('q').value.trim());
+		});
+ 
+		(function init(){
+			const param = qs('q');
+			const input = document.getElementById('q');
+			if (param){ input.value = param; fetchAndRender(param); }
+			else { input.value = 'AMZN'; }
+		})();
+	</script>
+</body>
+</html>
