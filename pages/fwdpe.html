@@ -6,42 +6,26 @@
     <title>Forward P/E Lookup</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛</text></svg>" />
     <link rel="stylesheet" href="../styles.css">
-    <style>
-        /* small overrides to keep page readable with existing site theme */
-        main { max-width: 1000px; margin: 6rem auto 4rem; padding: 1rem; color: #F8FAFC; }
-        .card { background: rgba(15,23,42,0.6); border-radius: 12px; padding: 1rem; box-shadow: 0 6px 18px rgba(2,6,23,0.6); }
-        label { display:block; margin-bottom: .5rem; font-weight:600; }
-        input[type="text"] { width: 100%; padding: .6rem .8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); color: #F8FAFC; }
-        button.primary { margin-top:.6rem; padding:.6rem 1rem; border-radius:10px; background:linear-gradient(135deg,#3B82F6,#2563EB); color:white; border:none; cursor:pointer; }
-        table { width:100%; border-collapse:collapse; margin-top:1rem; }
-        th, td { padding:.5rem .6rem; border-bottom:1px solid rgba(255,255,255,0.06); text-align:right; }
-        th:first-child, td:first-child { text-align:left; }
-        .muted { color: #94a3b8; font-size:.95rem; }
-        pre { background: rgba(255,255,255,0.02); padding: .5rem; border-radius:6px; overflow:auto; color:#d1fae5; }
-        .error { color:#fecaca; margin-top:.6rem; }
-    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/index.html" class="logo"></a>
-            <button class="nav-signup" onclick="openModal()">Sign Up</button>
+            <a href="../index.html" class="logo"></a>
+            <button onclick="openModal()">Sign Up</button>
         </div>
     </nav>
 
     <main>
-        <div class="card">
+        <article>
             <h2>Get forward p/e for one or more stocks</h2>
-            <p class="muted">Enter one or more ticker symbols separated by commas (e.g. V, AAPL, MSFT)</p>
+            <p class="muted">Enter one or more ticker symbols separated by commas</p>
 
-            <label for="tickers">Tickers</label>
             <input id="tickers" type="text" placeholder="V, SHW, AAPL" />
-            <div style="display:flex;gap:.6rem;align-items:center;">
-                <button id="lookupBtn" class="primary">Lookup</button>
-                <span id="status" class="muted" aria-live="polite"></span>
-            </div>
-            <div id="result" style="margin-top:1rem;"></div>
-        </div>
+            <button id="lookupBtn">Lookup</button>
+            <span id="status" class="muted" aria-live="polite"></span>
+
+            <div id="result"></div>
+        </article>
     </main>
 
     <script src="../scripts/footer.js"></script>
