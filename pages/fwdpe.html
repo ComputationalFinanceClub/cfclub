@@ -46,7 +46,7 @@
                 return;
             }
 
-            let html = '<table><thead><tr><th>Ticker</th><th>Current Price</th><th>Trailing EPS</th><th>Forward EPS</th><th>Forward P/E</th></tr></thead><tbody>';
+            let html = '<table><thead><tr><th>Ticker</th><th>Price</th><th>Trailing EPS</th><th>Forward EPS</th><th>Forward P/E</th></tr></thead><tbody>';
             tickerOrder.forEach(sym => {
                 const d = tickersObj[sym];
                 if (!d) {

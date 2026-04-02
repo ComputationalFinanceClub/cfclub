@@ -80,10 +80,6 @@
 				<div class="detail-inner">
 					<div class="detail-grid">${tiles}</div>
 					<div class="verdict ${vc}">${d.verdict || 'No verdict'}</div>
-					<details>
-						<summary>Raw JSON</summary>
-						<pre>${JSON.stringify(d, null, 2)}</pre>
-					</details>
 				</div>
 			`;
 		}
@@ -100,7 +96,7 @@
 			const table = document.createElement('table');
 			const thead = `<thead><tr>
 				<th>Ticker</th>
-				<th>Current Price</th>
+				<th>Price</th>
 				<th>Change %</th>
 				<th>52w Low</th>
 				<th>52w High</th>
@@ -121,21 +117,19 @@
 				const vc  = verdictClass(d.verdict);
  
 				const sumRow = document.createElement('tr');
-				sumRow.className = 'summary-row';
 				sumRow.innerHTML = `
-					<td>${d.ticker}<span class="chevron" id="chev-${i}">›</span></td>
+					<td>${d.ticker}</td>
 					<td>${fmt(d.current_price)}</td>
 					<td class="${pc >= 0 ? 'up' : 'down'}">${pc >= 0 ? '+' : ''}${fmt(pc)}%</td>
 					<td>${fmt(d['52w_low'])}</td>
 					<td>${fmt(d['52w_high'])}</td>
-					<td class="${pfh >= 0 ? 'up' : 'down'}">${fmt(pfh)}%</td>
-					<td>${fmt(d.rsi_14)}</td>
-					<td>${fmt(d.adx)}</td>
+					<td class="${pfh >= 0 ? 'up' : 'down'}">${fmt(pfh, 0)}%</td>
+					<td>${fmt(d.rsi_14, 1)}</td>
+					<td>${fmt(d.adx, 1)}</td>
 					<td style="color:${verdictColors[vc]}">${d.verdict || '—'}</td>
 				`;
  
 				const detRow = document.createElement('tr');
-				detRow.className = 'detail-row';
 				const detCell = document.createElement('td');
 				detCell.colSpan = 9;
 				detCell.innerHTML = buildDetail(d);
@@ -144,7 +138,6 @@
 				sumRow.addEventListener('click', () => {
 					const open = detRow.style.display === '';
 					detRow.style.display = open ? 'none' : '';
-					document.getElementById(`chev-${i}`).classList.toggle('open', !open);
 				});
  
 				tbody.appendChild(sumRow);
